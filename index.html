@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>LED 控制面板</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      text-align: center;
+      padding-top: 50px;
+    }
+    h1 {
+      margin-bottom: 40px;
+    }
+    button {
+      padding: 15px 30px;
+      font-size: 20px;
+      margin: 10px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .on {
+      background-color: #4CAF50;
+      color: white;
+    }
+    .on:hover {
+      background-color: #45a049;
+    }
+    .off {
+      background-color: #f44336;
+      color: white;
+    }
+    .off:hover {
+      background-color: #da190b;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>LED 控制面板</h1>
+
+  <button class="on" onclick="setLED(1)">打开 LED</button>
+  <button class="off" onclick="setLED(0)">关闭 LED</button>
+
+  <p id="status"></p>
+
+  <script>
+    function setLED(state) {
+      const url = `http://192.168.3.70:8999/led/set?a=${state}`;
+      fetch(url)
+        .then(response => {
+          if (response.ok) {
+            document.getElementById("status").textContent = `LED 已设置为: ${state ? "开" : "关"}`;
+          } else {
+            document.getElementById("status").textContent = "请求失败";
+          }
+        })
+        .catch(error => {
+          document.getElementById("status").textContent = "网络错误: " + error;
+        });
+    }
+  </script>
+
+</body>
+</html>
